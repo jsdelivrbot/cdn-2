@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+    <meta charset="utf-8"> 
+    <title>Javascript Utility</title> 
+    <script src="culture.js"></script>
+    <script>
+
+        var pt = new Culture('pt-BR');
+        var en = new Culture('en-US');
+    
+
+    </script>
+</head>
+<body>
+    <h1>Javascript Culture (Date/Number)</h1>
+    <hr />
+    <p>Press F12 to show console. Use `pt` variable for `pt-BR` or `en` for `en-US` language</p>
+    <hr />
+    <p>Try:</p>
+    <ul>
+        <li>pt.parseDate('26/8');</li>
+        <li>pt.parseDate('2008-02-25');</li>
+        <li>pt.format(new Date());</li>
+        <li>pt.format(new Date(), 'yyyy-MM-dd');</li>
+        <li>pt.format(new Date(), 'f');</li>
+        <li>pt.dateAdd('y', 2, new Date());</li>
+        <li>pt.dateDiff('M', pt.parseDate('01/01/2004'), pt.parseDate('25/04/2012'));</li>
+    </ul>
+
+
+
+</body>
+</html>
