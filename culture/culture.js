@@ -89,6 +89,11 @@ window.Culture = (function (window, undefined) {
 
             var result = null;
             
+            // test for ISO date format (utc/local)
+            if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z|-\d{2}:\d{2})$/.test(str)) {
+                return new Date(str);
+            }
+            
             for(var i = 0; i < culture.date.patterns.length; i++) {
                 result = keyMatch(str.toString(), culture.date.patterns[i], culture);
                 if(result !== null) break;
