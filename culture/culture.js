@@ -41,7 +41,7 @@ window.Culture = (function (window, undefined) {
         'ptbr': {
             lang: 'pt-BR',
             date: {
-                patterns: ['d', 'd/M', 'd/M/y', 'd/M/y h:m', 'd/M/y h:m:s', 'y-M-d', 'y-M-dTh:m:s', 'h:m', 'h:m:s'],
+                patterns: ['d', 'd/M', 'd/M/y', 'd/M/y h:m', 'd/M/y h:m:s', 'h:m', 'h:m:s'],
                 format: {
                     'd': 'dd/MM/yyyy',
                     'D': 'dddd, dd "de" MMMM "de" yyyy',
@@ -80,6 +80,13 @@ window.Culture = (function (window, undefined) {
 
         var culture = languages[(lang || 'enus').toLowerCase().replace('-', '')];
 
+        // initial parser patterns
+        var patterns = ['y-M-d', 'y-M-dTh:m:s', 'y-M-dTh:m:sZ'];
+
+        for(var p = 0; p < culture.date.patterns.length; p++) {
+            patterns.push(culture.date.patterns[p]);
+        }
+
         if (!culture) console.error('Language not defined: ' + lang);
 
         // Parse any string to Date object using current culture info. Returns null if not a valid date
@@ -88,16 +95,14 @@ window.Culture = (function (window, undefined) {
             if(str === null || isDate(str) || typeof(str) === 'undefined') return str || null;
 
             var result = null;
-            
-            // test for ISO date format (utc/local)
-            //if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z|-\d{2}:\d{2})?$/.test(str)) {
-                //return new Date(str);
-            //}
-            
-            for(var i = 0; i < culture.date.patterns.length; i++) {
-                result = keyMatch(str.toString(), culture.date.patterns[i], culture);
+
+            //console.log(patterns);
+
+            for(var i = 0; i < patterns.length; i++) {
+                result = keyMatch(str.toString(), patterns[i]);
                 if(result !== null) break;
             }
+
             if(result === null) return null;
             var now = new Date();
             
@@ -118,7 +123,9 @@ window.Culture = (function (window, undefined) {
             if (result.s > 59) return null;
             if (result.d < 1 || result.d > getDaysInMonth(result.M - 1, result.y)) return null;
 
-            return new Date(result.y, result.M - 1, result.d, result.h, result.m, result.s, result.f);
+            return result.utc ? 
+                new Date(Date.UTC(result.y, result.M - 1, result.d, result.h, result.m, result.s, result.f)) :
+                new Date(result.y, result.M - 1, result.d, result.h, result.m, result.s, result.f);
         }
 
         // Parse any string to Number object using current culture info. Returns null if not a valid number
@@ -296,6 +303,7 @@ window.Culture = (function (window, undefined) {
                 for(var i = 0; i < keys.length; i++) {
                     result[expr.keys[keys[i]]] = match[i + 1];
                 }
+                result.utc =  pattern.indexOf('Z')>= 0;
                 return result;
             }
             else {
