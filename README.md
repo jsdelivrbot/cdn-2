@@ -5,7 +5,7 @@
 Use:
 
 ```
-<script src="https://rawgit.com/mbdavid/cdn/master/router/router.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mbdavid/cdn/router/router.js" type="text/javascript"></script>
 
-<script src="https://rawgit.com/mbdavid/cdn/master/culture/culture.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/mbdavid/cdn/culture/culture.js" type="text/javascript"></script>
 ```
